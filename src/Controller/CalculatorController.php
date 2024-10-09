@@ -8,9 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\GeormetryCalculator;
 
 class CalculatorController extends AbstractController
 {
+    public function __construct(GeormetryCalculator $geormetryCalculator)
+    {
+        $this->geormetryCalculator = $geormetryCalculator;
+    }
+
      /**
      * @Route("/calculator", name="app_calculator")
      */
@@ -21,7 +27,7 @@ class CalculatorController extends AbstractController
         ]);
     }
 
-    public function circle(float $radius): JsonResponse
+    function circle(float $radius): JsonResponse
     {
         $circle =  new  Circle();
         $surfacearea = $circle->calculateSurface($radius);
@@ -35,7 +41,7 @@ class CalculatorController extends AbstractController
         ]);
     }
 
-    public function triangle(float $a, float $b, float $c): JsonResponse
+    function triangle(float $a, float $b, float $c): JsonResponse
     {
         $triangle = new Triangle();
         $area = $triangle->calculateSurface($a, $b, $c);
@@ -48,6 +54,27 @@ class CalculatorController extends AbstractController
             "c" => $c,
             "surface" => $area,
             "circumference" => $circumference,
+        ]);
+    }
+
+    function sumArea(float $object1, float $object2) : JsonResponse
+    {
+        $calculator = $this->geormetryCalculator;
+        $areasum = $calculator->sumAreaOfObjects($object1, $object2);
+        return $this->json([
+            "type" => "Sum of Area of 2 Objects",
+            "sum" => $areasum,
+        ]);
+
+    }
+
+    function sumDiameter(float $object1, float $object2) : JsonResponse
+    {
+        $calculator = $this->geormetryCalculator;
+        $areasum = $calculator->sumDiameterOfObject($object1, $object2);
+        return $this->json([
+            "type" => "Sum of diameters of 2 Objects",
+            "sum" => $areasum,
         ]);
     }
 }

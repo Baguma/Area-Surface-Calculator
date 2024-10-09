@@ -10,3 +10,13 @@ triangle:
   path: /triangle/{a}/{b}/{c}
   controller: App\Controller\CalculatorController::triangle
   methods: GET
+
+area_sum:
+  path: /area_sum/{object1}/{object2}
+  controller: App\Controller\CalculatorController::sumArea
+  methods: GET
+
+diameter_sum:
+  path: /diameter_sum/{object1}/{object2}
+  controller: App\Controller\CalculatorController::sumDiameter
+  methods: GET
